@@ -74,8 +74,6 @@ function registerUser() {
         });
 }
 
-
-
 // ------------ LOAD PAGE ------------
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -91,80 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
-
-// ------------ STUDENT PAGE ------------
-
-
-function initStudent() {
-    setUpProfile();
-    getAllLessons();
-
-
-
-}
-
-
-// function setUpProfile() {
-//     const profile = JSON.parse(localStorage.getItem('profile'));
-//     if (!profile) return;
-
-//     const profileDiv = document.getElementById("user_profile");
-//     profileDiv.innerHTML = `
-//         <strong>שם:</strong> ${profile.username} |
-//         <strong>ת.ז:</strong> ${profile.user_id} |
-//         <strong>אימייל:</strong> ${profile.email} |
-//         <strong>ביוגרפיה:</strong> ${profile.bio} 
-//     `;
-// }
-
-
-// function setUpProfile() {
-//     const profile = JSON.parse(localStorage.getItem('profile'));
-//     if (!profile) return;
-
-//     const profileDiv = document.getElementById("user_profile");
-
-//     profileDiv.innerHTML = `
-
-//         <div><strong>שם:</strong> ${profile.username}</div>
-//         <div><strong>ת.ז:</strong> ${profile.user_id}</div>
-//         <div>
-//             <strong>אימייל:</strong>
-//             <input type="email" id="emailInput" value="${profile.email || ''}">
-//         </div>
-//         <div>
-//             <strong>ביוגרפיה:</strong><br>
-//             <textarea id="bioTextarea" rows="3">${profile.bio || ''}</textarea>
-//         </div>
-//         <button id="saveProfileBtn">שמור</button>
-//     `;
-
-//     document.getElementById("saveProfileBtn").addEventListener("click", () => {
-//     const profile = JSON.parse(localStorage.getItem("profile"));
-//     const updatedEmail = document.getElementById("profile_email").value;
-//     const updatedBio = document.getElementById("profile_bio").value;
-
-//     fetch("/profile/updateProfile", {
-//         method: "PUT",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({
-//             user_id: profile.user_id,
-//             email: updatedEmail,
-//             bio: updatedBio
-//         })
-//     })
-//     .then(res => res.text())
-//     .then(msg => {
-//         alert(msg);
-//         profile.email = updatedEmail;
-//         profile.bio = updatedBio;
-//         localStorage.setItem("profile", JSON.stringify(profile));
-//     })
-//     .catch(err => console.error("Error updating profile:", err));
-// });
-
-// }
+// ------------ SHARED FUNCTIONS ------------
 
 function setUpProfile() {
     const profile = JSON.parse(localStorage.getItem('profile'));
@@ -191,7 +116,7 @@ function setUpProfile() {
         const bioInput = document.getElementById("profileBioInput");
 
         if (!isEditing) {
-            // עבור למצב עריכה
+            // Edit
             emailText.style.display = "none";
             bioText.style.display = "none";
             emailInput.style.display = "inline-block";
@@ -199,10 +124,10 @@ function setUpProfile() {
             document.getElementById("editSaveBtn").textContent = "שמור";
             isEditing = true;
         } else {
-            // שמירה
+            // Save
             const updatedEmail = emailInput.value;
             const updatedBio = bioInput.value;
-
+            // PUT Request to update profile
             fetch("/profile/updateProfile", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
@@ -215,13 +140,11 @@ function setUpProfile() {
             .then(res => res.text())
             .then(msg => {
                 profile_msg.textContent = msg;
-
-                // עדכון מקומי ו־localStorage
                 profile.email = updatedEmail;
                 profile.bio = updatedBio;
                 localStorage.setItem("profile", JSON.stringify(profile));
 
-                // עדכון תצוגה
+                // Update display
                 emailText.textContent = updatedEmail;
                 bioText.textContent = updatedBio;
                 emailText.style.display = "inline";
@@ -232,7 +155,6 @@ function setUpProfile() {
                 isEditing = false;
             })
             .catch(err => {
-                
                 profile_msg.textContent = err.message;
                 console.error(err);
             });
@@ -241,9 +163,12 @@ function setUpProfile() {
 }
 
 
+// ------------ STUDENT PAGE ------------
 
-
-
+function initStudent() {
+    setUpProfile();
+    getAllLessons();
+}
 
 function getAllLessons() {
     fetch("/lesson")
@@ -265,29 +190,6 @@ function getAllLessons() {
         });
 }
 
-
-// function createLessonRow(lesson, userId) {
-//     const tr = document.createElement("tr");
-
-//     const tdId = document.createElement("td");
-//     tdId.textContent = lesson.id;
-//     tr.appendChild(tdId);
-
-//     const tdTitle = document.createElement("td");
-//     tdTitle.textContent = lesson.title;
-//     tr.appendChild(tdTitle);
-
-//     const tdStudents = document.createElement("td");
-//     tdStudents.innerHTML = lesson.students
-//         .map(s => `Name: ${s.name}, ID: ${s.id}, Email: ${s.email}`)
-//         .join('<br>');
-//     tr.appendChild(tdStudents);
-
-//     const tdAction = createActionCell(lesson, userId);
-//     tr.appendChild(tdAction);
-
-//     return tr;
-// }
 function createLessonRow(lesson, userId) {
     const tr = document.createElement("tr");
 
@@ -305,7 +207,6 @@ function createLessonRow(lesson, userId) {
 
     const tdStudents = document.createElement("td");
     tdStudents.innerHTML = lesson.students
-        // .map(s => `Name: ${s.name}, ID: ${s.id}, Email: ${s.email}`)
         .map(s => ` שם תלמיד: ${s.name}, ת.ז: ${s.id}, אימייל: ${s.email}`)
         .join('<br>');
     tr.appendChild(tdStudents);
@@ -315,7 +216,6 @@ function createLessonRow(lesson, userId) {
 
     return tr;
 }
-
 
 function createActionCell(lesson, userId) {
     const td = document.createElement("td");
@@ -369,22 +269,16 @@ function createActionCell(lesson, userId) {
 }
 
 
-
-
 // ------------ TEACHER PAGE ------------
 
 
 function initTeacher(profile) {
     const teacherId = profile.user_id;
     setUpProfile();
-
-    // טען את כל השיעורים
     loadAllLessons();
-
-    // טען את השיעורים של המרצה הנוכחי
     loadTeacherLessons(teacherId);
 
-    // כפתור הוספת שיעור
+    // Add lesson button event
     document.getElementById('add_btn')?.addEventListener('click', async () => {
         const lessonTitle = document.getElementById('new_lesson_name').value;
         const msg = document.getElementById('teacher_msg');
@@ -394,47 +288,14 @@ function initTeacher(profile) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ title: lessonTitle, teacherId: teacherId })
         });
-
         msg.textContent = await res.text();
 
-        // רענן את שתי הרשימות
+        // refresh display
         loadAllLessons();
         loadTeacherLessons(teacherId);
     });
 }
 
-// async function loadTeacherLessons(teacherId) {
-//     try {
-//         const res = await fetch(`/lesson/${teacherId}`);
-//         const lessons = await res.json();
-//         const tbody = document.getElementById("teacher_current_lessons_list");
-//         if (!tbody) return;
-
-//         tbody.innerHTML = '';
-
-//         lessons.forEach(lesson => {
-//             const tr = document.createElement("tr");
-
-//             const tdId = document.createElement("td");
-//             tdId.textContent = lesson.id;
-//             tr.appendChild(tdId);
-
-//             const tdTitle = document.createElement("td");
-//             tdTitle.textContent = lesson.title;
-//             tr.appendChild(tdTitle);
-
-//             const tdStudents = document.createElement("td");
-//             tdStudents.innerHTML = lesson.students
-//                 .map(s => `Name: ${s.name}, ID: ${s.id}, Email: ${s.email}`)
-//                 .join('<br>');
-//             tr.appendChild(tdStudents);
-
-//             tbody.appendChild(tr);
-//         });
-//     } catch (err) {
-//         console.error("Error loading teacher lessons:", err);
-//     }
-// }
 
 async function loadTeacherLessons(teacherId) {
     try {
@@ -462,12 +323,11 @@ async function loadTeacherLessons(teacherId) {
 
             const tdStudents = document.createElement("td");
             tdStudents.innerHTML = lesson.students
-                //.map(s => `Name: ${s.name}, ID: ${s.id}, Email: ${s.email}`)
                 .map(s => ` שם תלמיד: ${s.name}, ת.ז: ${s.id}, אימייל: ${s.email}`)
                 .join('<br>');
             tr.appendChild(tdStudents);
 
-            // ⬅️ כפתור מחיקה
+            // Delete lesson button event
             const tdDelete = document.createElement("td");
             const deleteBtn = document.createElement("button");
             deleteBtn.textContent = "מחק";
@@ -481,15 +341,13 @@ async function loadTeacherLessons(teacherId) {
                     const msg = await delRes.text();
                     document.getElementById("teacher_msg").textContent = msg;
 
-                    // רענון טבלאות
+                    // Refresh display
                     loadAllLessons();
                     loadTeacherLessons(teacherId);
                 }
             });
-
             tdDelete.appendChild(deleteBtn);
             tr.appendChild(tdDelete);
-
             tbody.appendChild(tr);
         });
     } catch (err) {
@@ -524,11 +382,9 @@ async function loadAllLessons() {
 
             const tdStudents = document.createElement("td");
             tdStudents.innerHTML = lesson.students
-                // .map(s => `Name: ${s.name}, ID: ${s.id}, Email: ${s.email}`)
                 .map(s => ` שם תלמיד: ${s.name}, ת.ז: ${s.id}, אימייל: ${s.email}`)
                 .join('<br>');
             tr.appendChild(tdStudents);
-
             tbody.appendChild(tr);
         });
     } catch (err) {
