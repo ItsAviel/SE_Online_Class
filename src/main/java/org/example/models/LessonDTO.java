@@ -6,7 +6,6 @@ public class LessonDTO {
     private Long id;
     private String title;
     private List<UserDTO> students;
-
     private String teacherName;
 
     public LessonDTO(Long id, String title, List<UserDTO> students) {

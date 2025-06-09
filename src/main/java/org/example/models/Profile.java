@@ -6,15 +6,9 @@ import jakarta.persistence.*;
 public class Profile {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long user_id;
-//    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
-//    @JoinColumn(name = "user_id")
-//    private User user;
     private String role;
     private String bio;
-
-
     private String username;
     private String email;
     private String subject;

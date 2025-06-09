@@ -17,8 +17,6 @@ public class User {
     private Long password;
     private String name;
     private String email;
-//    @OneToOne(cascade = CascadeType.ALL)
-//    private Profile profile;
     @ManyToMany
     private List<Lesson> myLessons;
 

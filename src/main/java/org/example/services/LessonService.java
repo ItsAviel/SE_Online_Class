@@ -161,21 +161,4 @@ public class LessonService {
         return "Lesson deleted successfully";
     }
 
-
-
-
-    // -- TEMP
-//
-//    public Lesson getLessonById(Long id){
-//
-//        return lessonRepository.findById(id).orElse(null);
-//    }
-
-
-
-
-
-
-
-
 }

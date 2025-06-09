@@ -23,29 +23,4 @@ public class TeacherController {
         return teacherService.createTeacher(teacher);
     }
 
-
-
-
-    // -- TEMP
-
-//    @GetMapping
-//    public boolean existsById(@RequestParam Long teacherId) {
-//        return teacherService.existsById(teacherId);
-//    }
-//
-//    @GetMapping("/all")
-//    public List<Teacher> getAllTeachers() {
-//        return teacherService.getAllTeachers();
-//    }
-//
-//    @GetMapping("/{id}")
-//    public Teacher getTeacherById(Long id) {
-//        return teacherService.getTeacherById(id);
-//    }
-//
-//    @GetMapping("/subject/{subject}")
-//    public List<Teacher> getTeachersBySubject(String subject) {
-//        return teacherService.getTeachersBySubject(subject);
-//    }
-
 }

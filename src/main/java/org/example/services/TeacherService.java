@@ -68,25 +68,4 @@ public class TeacherService {
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
     }
 
-
-
-
-
-    // -- Temp
-//    public List<Teacher> getAllTeachers() {
-//        return teacherRepository.findAll();
-//    }
-//
-//
-//    public List<Teacher> getTeachersBySubject(String subject) {
-//        List<Teacher> teachers = teacherRepository.findBySubject(subject);
-//        if (teachers.isEmpty()) {
-//            throw new RuntimeException("No teachers found for subject: " + subject);
-//        }
-//        return teachers;
-//    }
-
-
-
-
 }

@@ -58,6 +58,4 @@ public class ProfileService {
         return "Profile updated successfully for user with ID " + userId;
     }
 
-
-
 }

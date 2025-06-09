@@ -63,20 +63,4 @@ public class StudentService {
                .orElseThrow(() -> new RuntimeException("Student not found"));
     }
 
-
-
-
-
-    // -- Temp
-//
-//    public List<Student> getAllStudents() {
-//        List<Student> students = studentRepository.findAll();
-//        if (students.isEmpty()) {
-//            throw new RuntimeException("No students found");
-//        }
-//        return students;
-//    }
-
-
-
 }

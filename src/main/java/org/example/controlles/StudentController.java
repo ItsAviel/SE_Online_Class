@@ -21,28 +21,4 @@ public class StudentController {
         return studentService.createStudent(student);
     }
 
-
-
-
-    // -- TEMP
-
-//    @GetMapping
-//    public boolean existsById(@RequestParam Long studentId) {
-//        return studentService.existsById(studentId);
-//    }
-//
-//
-//    @GetMapping("/{id}")
-//    public Student getStudentById(Long id) {
-//        return studentService.getStudentById(id);
-//    }
-//
-//    @GetMapping("/all")
-//    public List<Student> getAllStudents() {
-//        return studentService.getAllStudents();
-//    }
-
-
-
-
 }
