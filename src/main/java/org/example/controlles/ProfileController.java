@@ -1,6 +1,7 @@
 package org.example.controlles;
 
 import org.example.models.Profile;
+import org.example.models.ProfileUpdateRequest;
 import org.example.models.UserProfileRequest;
 import org.example.services.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,8 @@ public class ProfileController {
 
 
 
-
-
-
+    @PutMapping("/updateProfile")
+    public String updateProfile(@RequestBody ProfileUpdateRequest request) {
+        return profileService.updateProfile(request.getUser_id(), request.getEmail(), request.getBio());
+    }
 }

@@ -1,86 +1,251 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #e6f0ff, #ffffff);
+    margin: 0;
+    padding: 0;
     direction: rtl;
     text-align: center;
 }
 
-.container {
-    margin: 50px auto;
-    width: 300px;
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+/* כותרות */
+h1, h2, h3 {
+    color: #0056b3;
+    margin-top: 30px;
+    margin-bottom: 20px;
 }
 
-input, select, button {
+h1 {
+    font-size: 32px;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+h3 {
+    font-size: 20px;
+}
+
+/* קונטיינר פרופיל */
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+    text-align: right;
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+/* שדות פרופיל */
+.profile-field {
+    margin-bottom: 20px;
+}
+
+.profile-field input[type="email"],
+.profile-field textarea {
     width: 100%;
-    margin: 8px 0;
+    max-width: 100%;
     padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
     box-sizing: border-box;
+    resize: vertical;
+    margin-top: 8px;
 }
 
-button {
-    background-color: #4CAF50;
+/* כפתור עריכה */
+.profile-button {
+    padding: 10px 20px;
+    font-size: 15px;
     color: white;
+    background-color: #007bff;
     border: none;
+    border-radius: 6px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: #45a049;
+.profile-button:hover {
+    background-color: #0056b3;
 }
 
-.msg {
-    color:blue;
-    font-size: 0.9em;
+
+#student_msg,
+#profile_msg,
+#teacher_msg{
+    color: #0a2ee4;
+    font-size: 15px;
+    margin: 10px 0 15px 0;
+    text-align: center;
+    font-weight: bold;
+    letter-spacing: 0.5px;
 }
 
+
+
+/* טבלאות */
 table {
+    width: 90%;
+    max-width: 1000px;
+    margin: 20px auto;
     border-collapse: collapse;
-    width: 100%;
-    direction: rtl;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    background-color: #fff;
 }
 
 th, td {
-    border: 1px solid #000;
-    padding: 8px;
+    border: 1px solid #ddd;
+    padding: 12px;
     text-align: center;
+    font-size: 15px;
 }
 
 th {
     background-color: #f2f2f2;
+    color: #333;
 }
 
+td {
+    color: #444;
+}
 
-button.join-btn {
-    background-color: #4CAF50; /* ירוק */
+table tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* כפתור "הוסף" */
+#add_btn {
+    padding: 10px 20px;
+    font-size: 15px;
     color: white;
+    background-color: #007bff;
     border: none;
-    padding: 8px 14px;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s;
-    font-weight: bold;
+    margin-top: 10px;
 }
 
-button.join-btn:hover {
-    background-color: #45a049;
+#add_btn:hover {
+    background-color: #0056b3;
 }
 
-button.leave-btn {
-    background-color: #f44336; /* אדום */
-    color: white;
+/* Add this for the main container */
+.container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 30px 30px 20px 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    text-align: right;
+}
+
+.container input,
+.container select,
+.container button {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.container button {
+    background-color: #007bff;
+    color: #fff;
     border: none;
-    padding: 8px 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
     font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
 }
 
-button.leave-btn:hover {
-    background-color: #d32f2f;
+.container button:hover {
+    background-color: #0056b3;
 }
 
+.container .msg {
+    color: #0348f4;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Join lesson button */
+.join-btn {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 15px;
+    cursor: pointer;
+    margin: 0 2px;
+    transition: background 0.2s;
+}
+.join-btn:hover {
+    background-color: #218838;
+}
+
+/* Leave lesson button */
+.leave-btn {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 15px;
+    cursor: pointer;
+    margin: 0 2px;
+    transition: background 0.2s;
+}
+.leave-btn:hover {
+    background-color: #b52a37;
+}
+
+.delete-btn {
+    background-color: #ff5722;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 15px;
+    cursor: pointer;
+    margin: 0 2px;
+    transition: background 0.2s;
+}
+.delete-btn:hover {
+    background-color: #c63c0f;
+}
+
+
+.add_class_text {
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #f7fbff;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    margin-bottom: 10px;
+}
+.add_class_text:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 6px #b3d1ff;
+    outline: none;
+}
+
+/* Responsive for mobile */
+@media (max-width: 500px) {
+    .container {
+        padding: 15px;
+        margin: 20px auto;
+    }
+}

@@ -8,9 +8,29 @@
 </head>
 <body>
 <h1>ברוך הבא מרצה!</h1>
-<div id="user_profile"></div>
+<div id="user_profile" class="profile-container">
+    <div><strong>שם:</strong> <span id="profileName"></span></div>
+    <div><strong>ת.ז:</strong> <span id="profileId"></span></div>
 
-<p id="teacher_msg"></p>
+    <div class="profile-field">
+        <strong>אימייל:</strong>
+        <span id="profileEmailText"></span>
+        <input type="email" id="profileEmailInput" style="display:none;" />
+    </div>
+
+    <div class="profile-field">
+        <strong>ביוגרפיה:</strong>
+        <span id="profileBioText"></span>
+        <textarea id="profileBioInput" rows="3" style="display:none;"></textarea>
+    </div>
+
+    <button id="editSaveBtn" class="profile-button">ערוך פרופיל</button>
+    <p id="profile_msg" class="msg"></p>
+</div>
+
+
+
+<p id="teacher_msg" class="msg"></p>
 
 <h2>השיעורים שלך:</h2>
 <table>
@@ -27,6 +47,14 @@
 </table>
 
 
+
+<h3>הוסף שיעור חדש:</h3>
+<input type="text" id="new_lesson_name" class="add_class_text" placeholder="שם השיעור">
+<button id="add_btn">הוסף</button>
+
+
+
+
 <h2>כל השיעורים:</h2>
 <table>
     <thead>
@@ -40,11 +68,6 @@
     <tbody id="teacher_all_lessons"></tbody>
 </table>
 
-
-
-<h3>הוסף שיעור חדש:</h3>
-<input type="text" id="new_lesson_name" placeholder="שם השיעור">
-<button id="add_btn">הוסף</button>
 
 
 

@@ -8,12 +8,28 @@
 </head>
 <body>
 <h1>ברוך הבא תלמיד!</h1>
-<div id="user_profile"></div>
+<div id="user_profile" class="profile-container">
+    <div><strong>שם:</strong> <span id="profileName"></span></div>
+    <div><strong>ת.ז:</strong> <span id="profileId"></span></div>
+
+    <div class="profile-field">
+        <strong>אימייל:</strong>
+        <span id="profileEmailText"></span>
+        <input type="email" id="profileEmailInput" style="display:none;" />
+    </div>
+
+    <div class="profile-field">
+        <strong>ביוגרפיה:</strong>
+        <span id="profileBioText"></span>
+        <textarea id="profileBioInput" rows="3" style="display:none;"></textarea>
+    </div>
+
+    <button id="editSaveBtn" class="profile-button">ערוך פרופיל</button>
+    <p id="profile_msg" class="msg"></p>
+</div>
 
 
-
-
-<p id="student_msg"></p>
+<p id="student_msg" class="msg"></p>
 
 <h2>רשימת שיעורים זמינים:</h2>
 <table id="student_lessons_table" >

@@ -35,22 +35,22 @@ public class ProfileService {
                 .orElseThrow(() -> new RuntimeException("Error: Profile not found for user with ID " + id));
     }
 
-//
-//    public List<Profile> getAllProfiles() {
-//        List<Profile> profiles = profileRepository.findAll();
-//        if (!profiles.iterator().hasNext()) {
-//            throw new RuntimeException("No profiles found");
-//        }
-//        return profiles;
-//    }
 
-//    public String updateProfile(Profile profile) {
-//        if (profile.getId() == null || profile.getId() <= 0 || profile.getUser() == null) {
-//            throw new IllegalArgumentException("Profile ID must not be null for update");
-//        }
-//        profileRepository.save(profile);
-//        return "Profile updated successfully";
-//    }
+    public String updateProfile(Long userId, String email, String bio) {
+        //Update the user's profile with the given email and bio
+        Profile profile = profileRepository.findById(userId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+        if (profile == null || user == null) {
+            return "Profile not found for user with ID " + userId;
+        }
+        profile.setEmail(email);
+        profile.setBio(bio);
+        profileRepository.save(profile);
+        user.setEmail(email);
+        userRepository.save(user);
+        return "Profile updated successfully for user with ID " + userId;
+    }
+
 
 
 }
