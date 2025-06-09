@@ -23,34 +23,26 @@ public class TeacherService {
     UserRepository userRepository;
 
 
-    public boolean existsById(Long id) {
-        return teacherRepository.existsById(id);
-    }
+
 
     public String createTeacher(Teacher teacher) {
-
-
         if (teacher.getId() <= 0) {
             return "Error: teacher ID is invalid.";
         }
-
         if (userRepository.existsById(teacher.getId()) || existsById(teacher.getId())) {
             return "Error: teacher ID already exists.";
         }
-
-
         if (teacher.getPassword() == null || teacher.getPassword() < 100 ) {
             return "Error: password must be longer than 3 digits";
         }
-
         if (teacher.getName() == null || teacher.getName().trim().length() < 2
                 || teacher.getName().length() > 20 ||
                 !teacher.getName().matches("[a-zA-Zא-ת ]+")) {
             return "Error: Invalid teacher name";
         }
-
         teacherRepository.save(teacher);
 
+        // Create a new profile for the teacher
         Profile profile = new Profile();
         profile.setRole("teacher");
         profile.setBio("New teacher profile");
@@ -64,8 +56,11 @@ public class TeacherService {
     }
 
 
-    public List<Teacher> getAllTeachers() {
-        return teacherRepository.findAll();
+
+    // -- Help methods:
+
+    public boolean existsById(Long id) {
+        return teacherRepository.existsById(id);
     }
 
     public Teacher getTeacherById(Long id) {
@@ -73,13 +68,24 @@ public class TeacherService {
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
     }
 
-    public List<Teacher> getTeachersBySubject(String subject) {
-        List<Teacher> teachers = teacherRepository.findBySubject(subject);
-        if (teachers.isEmpty()) {
-            throw new RuntimeException("No teachers found for subject: " + subject);
-        }
-        return teachers;
-    }
+
+
+
+
+    // -- Temp
+//    public List<Teacher> getAllTeachers() {
+//        return teacherRepository.findAll();
+//    }
+//
+//
+//    public List<Teacher> getTeachersBySubject(String subject) {
+//        List<Teacher> teachers = teacherRepository.findBySubject(subject);
+//        if (teachers.isEmpty()) {
+//            throw new RuntimeException("No teachers found for subject: " + subject);
+//        }
+//        return teachers;
+//    }
+
 
 
 

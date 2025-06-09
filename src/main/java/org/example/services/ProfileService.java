@@ -17,6 +17,10 @@ public class ProfileService {
     @Autowired
     UserRepository userRepository;
 
+
+
+    // -- user login: get profile by user ID and password
+
     public Profile getUserProfile(Long id, Long password) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("Error: user ID is invalid");
@@ -35,6 +39,9 @@ public class ProfileService {
                 .orElseThrow(() -> new RuntimeException("Error: Profile not found for user with ID " + id));
     }
 
+
+
+    // -- Update user profile with email and bio
 
     public String updateProfile(Long userId, String email, String bio) {
         //Update the user's profile with the given email and bio
