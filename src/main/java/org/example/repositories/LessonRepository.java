@@ -13,8 +13,6 @@ public interface LessonRepository extends CrudRepository<Lesson,Long> {
     @Override
     List<Lesson> findAll();
 
-    List<Lesson> findByTeacherId(Long teacherId);
-
 
 
 

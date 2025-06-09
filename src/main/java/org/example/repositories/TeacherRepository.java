@@ -9,6 +9,4 @@ public interface TeacherRepository extends CrudRepository<Teacher,Long> {
 
     @Override
     List<Teacher> findAll();
-    List<Teacher> findBySubject(String subject);
-
 }

@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface StudentRepository extends CrudRepository<Student, Long> {
 
-
     @Override
     List<Student> findAll();
-
     }

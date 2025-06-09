@@ -7,11 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProfileRepository extends CrudRepository<Profile, Long> {
+
     @Override
     Optional<Profile> findById(Long id);
-
-//    Profile findByUserId(Long userId);
-//    @Override
-//    List<Profile> findAll();
-
 }
