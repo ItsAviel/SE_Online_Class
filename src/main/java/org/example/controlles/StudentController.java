@@ -15,26 +15,32 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
+    // -- Register student (index.html form)
     @PostMapping
     public String createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
     }
 
-    @GetMapping
-    public boolean existsById(@RequestParam Long studentId) {
-        return studentService.existsById(studentId);
-    }
 
 
-    @GetMapping("/{id}")
-    public Student getStudentById(Long id) {
-        return studentService.getStudentById(id);
-    }
 
-    @GetMapping("/all")
-    public List<Student> getAllStudents() {
-        return studentService.getAllStudents();
-    }
+    // -- TEMP
+
+//    @GetMapping
+//    public boolean existsById(@RequestParam Long studentId) {
+//        return studentService.existsById(studentId);
+//    }
+//
+//
+//    @GetMapping("/{id}")
+//    public Student getStudentById(Long id) {
+//        return studentService.getStudentById(id);
+//    }
+//
+//    @GetMapping("/all")
+//    public List<Student> getAllStudents() {
+//        return studentService.getAllStudents();
+//    }
 
 
 

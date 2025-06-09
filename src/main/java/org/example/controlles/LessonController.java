@@ -18,6 +18,8 @@ public class LessonController {
     LessonService lessonService;
 
 
+    // -- Mapping for students:
+
     @GetMapping
     public List<LessonDTO> getAllLessons() {
         return lessonService.getAllLessons();
@@ -25,7 +27,6 @@ public class LessonController {
 
     @PostMapping("/join")
     public String joinToLesson(@RequestBody LessonJoinRequest lessonJoinRequest){
-
         return lessonService.joinToLesson(lessonJoinRequest.getLessonId(), lessonJoinRequest.getUserId());
     }
 
@@ -36,9 +37,7 @@ public class LessonController {
 
 
 
-
-
-//teacher
+    // -- Mapping for teachers:
 
     @GetMapping("/{teacherId}")
     public List<LessonDTO> getAllLessonsForTeacher(@PathVariable Long teacherId) {
@@ -50,13 +49,8 @@ public class LessonController {
         return lessonService.createLesson(lessonCreateRequest.getTitle(), lessonCreateRequest.getTeacherId());
     }
 
-
     @DeleteMapping("/deleteLesson/{lessonId}")
     public String deleteLesson(@PathVariable Long lessonId) {
         return lessonService.deleteLesson(lessonId);
     }
-
-
-
-
 }

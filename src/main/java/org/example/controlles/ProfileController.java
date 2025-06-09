@@ -20,6 +20,8 @@ public class ProfileController {
     ProfileService profileService;
 
 
+    // -- Endpoint to login: get profile (by user ID and password)
+
     @PostMapping
     public ResponseEntity<?> getUserProfile(@RequestBody UserProfileRequest request) {
         try {
@@ -31,8 +33,6 @@ public class ProfileController {
                     .body(Map.of("message", e.getMessage()));
         }
     }
-
-
 
 
     @PutMapping("/updateProfile")
