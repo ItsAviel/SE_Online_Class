@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <link rel="stylesheet" href="./style/style.css">
+    <meta charset="UTF-8">
+    <title>מערכת שיעורים פרטיים</title>
+    <script src="./js/script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>ברוכים הבאים</h1>
+
+        <section>
+            <h2>התחברות</h2>
+            <input type="text" id="login_id" placeholder="הכנס תעודת זהות">
+            <input type="password" id="login_password" placeholder="סיסמה" >
+            <button onclick="loginUser()">התחבר</button>
+            <p id="login_msg" class="msg"></p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>הרשמה</h2>
+            <input type="text" id="register_name" placeholder="שם מלא">
+            <input type="text" id="register_id" placeholder="תעודת זהות">
+            <input type="password" id="register_password" placeholder="סיסמה">
+            <input type="email" id="register_email" placeholder="אימייל">
+            <select id="register_role">
+                <option value="student">תלמיד</option>
+                <option value="teacher">מרצה</option>
+            </select>
+            <button onclick="registerUser()">הרשם</button>
+            <p id="register_msg" class="msg"></p>
+        </section>
+    </div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./style/style.css">
+    <script src="./js/script.js"></script>
+    <title>דף מרצה</title>
+</head>
+<body>
+<h1>ברוך הבא מרצה!</h1>
+<div id="user_profile"></div>
+
+<p id="teacher_msg"></p>
+
+<h2>השיעורים שלך:</h2>
+<table>
+  <thead>
+    <tr>
+      <th>מספר שיעור</th>
+      <th>שם שיעור</th>
+      <th>שם מרצה</th>
+      <th>תלמידים</th>
+      <th>פעולות</th> <!-- ✅ חדש -->
+    </tr>
+  </thead>
+  <tbody id="teacher_current_lessons_list"></tbody>
+</table>
+
+
+<h2>כל השיעורים:</h2>
+<table>
+    <thead>
+    <tr>
+        <th>מספר שיעור</th>
+        <th>שם שיעור</th>
+        <th>שם מרצה</th>
+        <th>תלמידים</th>
+    </tr>
+    </thead>
+    <tbody id="teacher_all_lessons"></tbody>
+</table>
+
+
+
+<h3>הוסף שיעור חדש:</h3>
+<input type="text" id="new_lesson_name" placeholder="שם השיעור">
+<button id="add_btn">הוסף</button>
+
+
+
+</body>
+</html>
+
