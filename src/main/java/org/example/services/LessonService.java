@@ -23,10 +23,10 @@ public class LessonService {
     // -- Shared methods for both students and teachers:
 
     public List<LessonDTO> getAllLessons() {
-        List<Lesson> rawLessons = lessonRepository.findAll();
-        List<LessonDTO> lessonDTOList = new ArrayList<>();
+        List<Lesson> unfiltered = lessonRepository.findAll();
+        List<LessonDTO> filtered_lessons = new ArrayList<>();
 
-        for (Lesson lesson : rawLessons) {
+        for (Lesson lesson : unfiltered) {
             List<UserDTO> studentDTOs = new ArrayList<>();
             for (User student : lesson.getStudents()) {
                 UserDTO userDTO = new UserDTO(
@@ -49,9 +49,9 @@ public class LessonService {
                     teacherName
             );
 
-            lessonDTOList.add(lessonDTO);
+            filtered_lessons.add(lessonDTO);
         }
-        return lessonDTOList;
+        return filtered_lessons;
     }
 
 
