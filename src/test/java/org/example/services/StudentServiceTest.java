@@ -42,7 +42,7 @@ public class StudentServiceTest {
     public void testCreateStudent_InvalidPassword() {
         System.out.println("Running testCreateStudent_InvalidPassword");
         Student s = new Student();
-        s.setId(123L);
+        s.setId(123456789L);
         s.setName("Test");
         s.setPassword(50L);
         String result = studentService.createStudent(s);
@@ -53,7 +53,7 @@ public class StudentServiceTest {
     public void testCreateStudent_InvalidName() {
         System.out.println("Running testCreateStudent_InvalidName");
         Student s = new Student();
-        s.setId(123L);
+        s.setId(123456789L);
         s.setPassword(123L);
         s.setName("1");
         String result = studentService.createStudent(s);
@@ -64,7 +64,7 @@ public class StudentServiceTest {
     public void testCreateStudent_Success() {
         System.out.println("Running testCreateStudent_Success");
         Student s = new Student();
-        s.setId(123L);
+        s.setId(123456789L);
         s.setName("Test Student");
         s.setPassword(1234L);
         s.setEmail("TestMail@gmail.com");
