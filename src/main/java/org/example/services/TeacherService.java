@@ -26,7 +26,7 @@ public class TeacherService {
 
 
     public String createTeacher(Teacher teacher) {
-        if (teacher.getId() <= 111111111 || teacher.getId() > 999999999 || teacher.getId() == null) {
+        if (teacher.getId() <= 100000000 || teacher.getId() > 999999999 || teacher.getId() == null) {
             return "Error: teacher ID is invalid.";
         }
         if (userRepository.existsById(teacher.getId()) || existsById(teacher.getId())) {
