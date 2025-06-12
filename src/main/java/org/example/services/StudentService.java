@@ -22,7 +22,7 @@ public class StudentService {
 
 
     public String createStudent(Student student) {
-        if (student.getId() <= 0 || student.getId() > 999999999 || student.getId() == null) {
+        if (student.getId() <= 100000000 || student.getId() > 999999999 || student.getId() == null) {
             return "Error: student ID is invalid";
         }
         if ( userRepository.existsById(student.getId()) || existsById(student.getId())) {
