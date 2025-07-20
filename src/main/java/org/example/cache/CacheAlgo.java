@@ -1,6 +1,5 @@
 package org.example.cache;
 
-
 public interface CacheAlgo<K, V> {
     void put(K key, V value);
     V get(K key);
