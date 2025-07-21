@@ -35,4 +35,9 @@ public class LRUCacheAlgo<K, V> implements CacheAlgo<K, V> {
     public int size() {
         return cacheMap.size();
     }
+
+    @Override
+    public void remove(K key) {
+        cacheMap.remove(key);
+    }
 }

@@ -65,13 +65,7 @@ public class LessonService {
         //Lesson lesson = lessonRepository.findById(lesson_id).orElse(null);
 
         //with cache
-        Lesson lesson = lessonCache.get(lesson_id);
-        if (lesson == null) {
-            lesson = lessonRepository.findById(lesson_id).orElse(null);
-            if (lesson != null) {
-                lessonCache.put(lesson_id, lesson);
-            }
-        }
+        Lesson lesson = getLessonByIdWithCache(lesson_id);
 
         if (lesson == null) {
             return "Lesson not found";
@@ -97,7 +91,12 @@ public class LessonService {
 
 
     public String removeStudentFromLesson(Long lesson_id, Long user_id) {
-        Lesson lesson = lessonRepository.findById(lesson_id).orElse(null);
+        //without cache
+        //Lesson lesson = lessonRepository.findById(lesson_id).orElse(null);
+
+        //with cache
+        Lesson lesson = getLessonByIdWithCache(lesson_id);
+
         if (lesson == null) {
             return "Lesson not found";
         }
@@ -117,6 +116,8 @@ public class LessonService {
         }
 
         lessonRepository.save(lesson);
+        // Update the cache after saving
+        lessonCache.put(lesson.getId(), lesson);
         return "User " + user.getName() + " removed from the lesson successfully";
     }
 
@@ -140,6 +141,8 @@ public class LessonService {
         lesson.setTeacherId(teacherId);
         lesson.setStudents(new ArrayList<>());
         lessonRepository.save(lesson);
+        // Update the cache after saving
+        lessonCache.put(lesson.getId(), lesson);
         return "Lesson created successfully";
     }
 
@@ -173,7 +176,25 @@ public class LessonService {
             return "Error: Lesson not found";
         }
         lessonRepository.deleteById(lessonId);
+        // Remove from cache
+        lessonCache.remove(lessonId);
+
         return "Lesson deleted successfully";
     }
+
+
+    // -- Private help method for cache:
+
+    private Lesson getLessonByIdWithCache(Long id) {
+        Lesson lesson = lessonCache.get(id);
+        if (lesson == null) {
+            lesson = lessonRepository.findById(id).orElse(null);
+            if (lesson != null) {
+                lessonCache.put(id, lesson);
+            }
+        }
+        return lesson;
+    }
+
 
 }

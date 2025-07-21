@@ -5,4 +5,7 @@ public interface CacheAlgo<K, V> {
     V get(K key);
     boolean containsKey(K key);
     int size();
+
+    // -- Help method to remove an entry from the cache(used in delete operations):
+    void remove(K key);
 }
