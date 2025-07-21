@@ -15,10 +15,8 @@ public class LessonService {
 
     @Autowired
     LessonRepository lessonRepository;
-
     @Autowired
     StudentService studentService;
-
     @Autowired
     TeacherService teacherService;
 
