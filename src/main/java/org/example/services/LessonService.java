@@ -57,10 +57,9 @@ public class LessonService {
                     studentDTOs,
                     teacherName
             );
-
             filtered_lessons.add(lessonDTO);
         }
-
+        // Cache the filtered lessons:
         lessonListCache.put("all", filtered_lessons);
         return filtered_lessons;
     }
