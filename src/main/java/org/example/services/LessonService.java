@@ -1,10 +1,11 @@
 package org.example.services;
 
+import org.example.cache.CacheAlgo;
+import org.example.cache.LRUCacheAlgo;
 import org.example.models.*;
 import org.example.repositories.LessonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class LessonService {
     StudentService studentService;
     @Autowired
     TeacherService teacherService;
+    private final CacheAlgo<Long, Lesson> lessonCache = new LRUCacheAlgo<>(100);
 
 
     // -- Shared methods for both students and teachers:
@@ -59,7 +61,18 @@ public class LessonService {
 
 
     public String joinToLesson(Long lesson_id, Long user_id) {
-        Lesson lesson = lessonRepository.findById(lesson_id).orElse(null);
+        //without cache
+        //Lesson lesson = lessonRepository.findById(lesson_id).orElse(null);
+
+        //with cache
+        Lesson lesson = lessonCache.get(lesson_id);
+        if (lesson == null) {
+            lesson = lessonRepository.findById(lesson_id).orElse(null);
+            if (lesson != null) {
+                lessonCache.put(lesson_id, lesson);
+            }
+        }
+
         if (lesson == null) {
             return "Lesson not found";
         }
@@ -76,6 +89,8 @@ public class LessonService {
         }
         lesson.getStudents().add(user);
         lessonRepository.save(lesson);
+        // Update the cache after saving
+        lessonCache.put(lesson.getId(), lesson);
         return "User " + user.getName() +  " joined the lesson successfully";
     }
 
