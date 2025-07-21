@@ -6,25 +6,35 @@ import org.example.models.*;
 import org.example.repositories.LessonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Service
 public class LessonService {
 
     @Autowired
     LessonRepository lessonRepository;
+
     @Autowired
     StudentService studentService;
+
     @Autowired
     TeacherService teacherService;
+
+    // Caches
     private final CacheAlgo<Long, Lesson> lessonCache = new LRUCacheAlgo<>(100);
+    private final CacheAlgo<String, List<LessonDTO>> lessonListCache = new LRUCacheAlgo<>(1);
+    private final CacheAlgo<Long, List<LessonDTO>> teacherLessonsCache = new LRUCacheAlgo<>(100);
 
 
     // -- Shared methods for both students and teachers:
 
     public List<LessonDTO> getAllLessons() {
+        if (lessonListCache.containsKey("all")) {
+            return lessonListCache.get("all");
+        }
+
         List<Lesson> unfiltered = lessonRepository.findAll();
         List<LessonDTO> filtered_lessons = new ArrayList<>();
 
@@ -53,62 +63,58 @@ public class LessonService {
 
             filtered_lessons.add(lessonDTO);
         }
+
+        lessonListCache.put("all", filtered_lessons);
         return filtered_lessons;
     }
 
-
     // -- Student specific methods:
 
-
     public String joinToLesson(Long lesson_id, Long user_id) {
-        //without cache
-        //Lesson lesson = lessonRepository.findById(lesson_id).orElse(null);
-
-        //with cache
+        // Check if the lesson exists in the cache or database:
         Lesson lesson = getLessonByIdWithCache(lesson_id);
-
         if (lesson == null) {
             return "Lesson not found";
         }
+
         if (lesson.getStudents().stream().anyMatch(user -> user.getId().equals(user_id))) {
             return "User already joined this lesson";
         }
+
         User user = null;
-        if (teacherService.existsById(user_id) ){
+        if (teacherService.existsById(user_id)) {
             user = teacherService.getTeacherById(user_id);
-        } else if ( studentService.existsById(user_id) ) {
+        } else if (studentService.existsById(user_id)) {
             user = studentService.getStudentById(user_id);
         } else {
             return "User not found";
         }
+
         lesson.getStudents().add(user);
         lessonRepository.save(lesson);
-        // Update the cache after saving
-        lessonCache.put(lesson.getId(), lesson);
-        return "User " + user.getName() +  " joined the lesson successfully";
+
+        // Update caches:
+        lessonCache.put(lesson.getId(), lesson); // עדכון cache
+        lessonListCache.remove("all");
+        teacherLessonsCache.remove(lesson.getTeacherId());
+
+        return "User " + user.getName() + " joined the lesson successfully";
     }
 
-
-
     public String removeStudentFromLesson(Long lesson_id, Long user_id) {
-        //without cache
-        //Lesson lesson = lessonRepository.findById(lesson_id).orElse(null);
-
-        //with cache
+        // Check if the lesson exists in the cache or database:
         Lesson lesson = getLessonByIdWithCache(lesson_id);
-
         if (lesson == null) {
             return "Lesson not found";
         }
 
         User user = null;
-        if (teacherService.existsById(user_id) ){
+        if (teacherService.existsById(user_id)) {
             user = teacherService.getTeacherById(user_id);
-        } else if ( studentService.existsById(user_id) ) {
+        } else if (studentService.existsById(user_id)) {
             user = studentService.getStudentById(user_id);
         } else {
             return "User not found";
-
         }
 
         if (!lesson.getStudents().removeIf(student -> student.getId().equals(user_id))) {
@@ -116,18 +122,20 @@ public class LessonService {
         }
 
         lessonRepository.save(lesson);
-        // Update the cache after saving
-        lessonCache.put(lesson.getId(), lesson);
+
+        // Update caches:
+        lessonCache.put(lesson.getId(), lesson); // עדכון cache
+        lessonListCache.remove("all");
+        teacherLessonsCache.remove(lesson.getTeacherId());
+
         return "User " + user.getName() + " removed from the lesson successfully";
     }
-
-
 
 
     // -- Teacher specific methods:
 
     public String createLesson(String title, Long teacherId) {
-        if ( title == null || title.trim().length() < 3
+        if (title == null || title.trim().length() < 3
                 || title.length() > 50
                 || !title.matches("[a-zA-Zא-ת0-9 ]+")) {
             return "Error: Invalid lesson title";
@@ -141,14 +149,20 @@ public class LessonService {
         lesson.setTeacherId(teacherId);
         lesson.setStudents(new ArrayList<>());
         lessonRepository.save(lesson);
-        // Update the cache after saving
+
+        // Update caches:
         lessonCache.put(lesson.getId(), lesson);
+        lessonListCache.remove("all");
+        teacherLessonsCache.remove(teacherId);
+
         return "Lesson created successfully";
     }
 
-
-
     public List<LessonDTO> getAllLessonsForTeacher(Long teacherId) {
+        if (teacherLessonsCache.containsKey(teacherId)) {
+            return teacherLessonsCache.get(teacherId);
+        }
+
         List<Lesson> unfiltered_lessons = lessonRepository.findAll();
         List<LessonDTO> filtered_lessons = new ArrayList<>();
 
@@ -162,29 +176,43 @@ public class LessonService {
                 if (teacherService.existsById(teacherId)) {
                     teacherName = teacherService.getTeacherById(teacherId).getName();
                 }
-                LessonDTO dto = new LessonDTO(lesson.getId(), lesson.getTitle(), students_in_lesson, teacherName);
+
+                LessonDTO dto = new LessonDTO(
+                        lesson.getId(),
+                        lesson.getTitle(),
+                        students_in_lesson,
+                        teacherName
+                );
                 filtered_lessons.add(dto);
             }
         }
+        //Cache the filtered lessons for the teacher:
+        teacherLessonsCache.put(teacherId, filtered_lessons);
         return filtered_lessons;
     }
-
 
 
     public String deleteLesson(Long lessonId) {
         if (!lessonRepository.existsById(lessonId)) {
             return "Error: Lesson not found";
         }
+
+        //Remove the lesson from the cache and database:
+        Lesson lesson = lessonCache.get(lessonId);
+        Long teacherId = lesson != null ? lesson.getTeacherId() : null;
+
         lessonRepository.deleteById(lessonId);
-        // Remove from cache
         lessonCache.remove(lessonId);
+        lessonListCache.remove("all");
+
+        if (teacherId != null) {
+            teacherLessonsCache.remove(teacherId);
+        }
 
         return "Lesson deleted successfully";
     }
 
-
-    // -- Private help method for cache:
-
+    // -- Help method to get a lesson with caching:
     private Lesson getLessonByIdWithCache(Long id) {
         Lesson lesson = lessonCache.get(id);
         if (lesson == null) {
@@ -195,6 +223,4 @@ public class LessonService {
         }
         return lesson;
     }
-
-
 }
