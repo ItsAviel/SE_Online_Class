@@ -64,6 +64,9 @@ public class LessonService {
         return filtered_lessons;
     }
 
+
+
+
     // -- Student specific methods:
 
     public String joinToLesson(Long lesson_id, Long user_id) {
@@ -126,6 +129,7 @@ public class LessonService {
 
         return "User " + user.getName() + " removed from the lesson successfully";
     }
+
 
 
     // -- Teacher specific methods:
@@ -207,6 +211,9 @@ public class LessonService {
 
         return "Lesson deleted successfully";
     }
+
+
+
 
     // -- Help method to get a lesson with caching:
     private Lesson getLessonByIdWithCache(Long id) {
