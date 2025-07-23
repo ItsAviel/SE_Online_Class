@@ -29,8 +29,10 @@ public class LessonService {
 
     public List<LessonDTO> getAllLessons() {
         if (lessonListCache.containsKey("all")) {
+            System.out.println("Returning cached lessons");
             return lessonListCache.get("all");
         }
+        System.out.println("Fetching lessons from database");
 
         List<Lesson> unfiltered = lessonRepository.findAll();
         List<LessonDTO> filtered_lessons = new ArrayList<>();
@@ -61,6 +63,7 @@ public class LessonService {
         }
         // Cache the filtered lessons:
         lessonListCache.put("all", filtered_lessons);
+        System.out.println("Lessons cached successfully");
         return filtered_lessons;
     }
 
@@ -93,9 +96,12 @@ public class LessonService {
         lessonRepository.save(lesson);
 
         // Update caches:
-        lessonCache.put(lesson.getId(), lesson); // עדכון cache
+        lessonCache.put(lesson.getId(), lesson);
+        System.out.println("Lesson with ID " + lesson_id + " updated in cache");
         lessonListCache.remove("all");
+        System.out.println("All lessons cache cleared");
         teacherLessonsCache.remove(lesson.getTeacherId());
+        System.out.println("Teacher lessons cache cleared for teacher ID: " + lesson.getTeacherId());
 
         return "User " + user.getName() + " joined the lesson successfully";
     }
@@ -123,9 +129,12 @@ public class LessonService {
         lessonRepository.save(lesson);
 
         // Update caches:
-        lessonCache.put(lesson.getId(), lesson); // עדכון cache
+        lessonCache.put(lesson.getId(), lesson);
+        System.out.println("Lesson with ID " + lesson_id + " updated in cache");
         lessonListCache.remove("all");
+        System.out.println("All lessons cache cleared");
         teacherLessonsCache.remove(lesson.getTeacherId());
+        System.out.println("Teacher lessons cache cleared for teacher ID: " + lesson.getTeacherId());
 
         return "User " + user.getName() + " removed from the lesson successfully";
     }
@@ -152,16 +161,21 @@ public class LessonService {
 
         // Update caches:
         lessonCache.put(lesson.getId(), lesson);
+        System.out.println("Lesson with ID " + lesson.getId() + " added to cache");
         lessonListCache.remove("all");
+        System.out.println("All lessons cache cleared");
         teacherLessonsCache.remove(teacherId);
+        System.out.println("Teacher lessons cache cleared for teacher ID: " + teacherId);
 
         return "Lesson created successfully";
     }
 
     public List<LessonDTO> getAllLessonsForTeacher(Long teacherId) {
         if (teacherLessonsCache.containsKey(teacherId)) {
+            System.out.println("Returning cached lessons for teacher ID: " + teacherId);
             return teacherLessonsCache.get(teacherId);
         }
+        System.out.println("Fetching lessons for teacher ID: " + teacherId + " from database");
 
         List<Lesson> unfiltered_lessons = lessonRepository.findAll();
         List<LessonDTO> filtered_lessons = new ArrayList<>();
@@ -188,6 +202,7 @@ public class LessonService {
         }
         //Cache the filtered lessons for the teacher:
         teacherLessonsCache.put(teacherId, filtered_lessons);
+        System.out.println("Lessons for teacher ID " + teacherId + " cached successfully");
         return filtered_lessons;
     }
 
@@ -203,11 +218,15 @@ public class LessonService {
 
         lessonRepository.deleteById(lessonId);
         lessonCache.remove(lessonId);
+        System.out.println("Lesson with ID " + lessonId + " deleted from cache and database");
         lessonListCache.remove("all");
+        System.out.println("All lessons cache cleared");
 
         if (teacherId != null) {
             teacherLessonsCache.remove(teacherId);
+            System.out.println("Teacher lessons cache cleared for teacher ID: " + teacherId);
         }
+
 
         return "Lesson deleted successfully";
     }

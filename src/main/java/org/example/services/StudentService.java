@@ -52,6 +52,7 @@ public class StudentService {
 
         // Update cache
         studentCache.put(student.getId(), student);
+        System.out.println("Student with ID " + student.getId() + " added to cache");
 
         return "student created successfully";
     }
@@ -65,13 +66,17 @@ public class StudentService {
 
     public Student getStudentById(Long id) {
         if (studentCache.containsKey(id)) {
+            System.out.println("Cache hit for student ID: " + id);
             return studentCache.get(id);
         }
+        System.out.println("Cache miss for student ID: " + id);
 
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
         studentCache.put(id, student);
+        System.out.println("Student with ID " + id + " added to cache");
+
         return student;
     }
 }

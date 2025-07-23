@@ -38,13 +38,16 @@ public class ProfileService {
 
         // Check profile in cache first
         if (profileCache.containsKey(id)) {
+            System.out.println("Profile found in cache for user ID: " + id);
             return profileCache.get(id);
         }
+        System.out.println("Profile not found in cache, fetching from database for user ID: " + id);
 
         Profile profile = profileRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Error: Profile not found for user with ID " + id));
 
         profileCache.put(id, profile);
+        System.out.println("Profile added to cache for user ID: " + id);
         return profile;
     }
 
@@ -66,6 +69,7 @@ public class ProfileService {
 
         // Update profile cache:
         profileCache.put(userId, profile);
+        System.out.println("Profile updated in cache for user ID: " + userId);
 
         return "Profile updated successfully for user with ID " + userId;
     }
